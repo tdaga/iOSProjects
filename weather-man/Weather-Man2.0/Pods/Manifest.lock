@@ -1,0 +1,24 @@
+PODS:
+  - Alamofire (4.9.0)
+  - SwiftyJSON (5.0.0)
+  - WXKDarkSky (2.2.1)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.0)
+  - SwiftyJSON
+  - WXKDarkSky (~> 2.2.0)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - SwiftyJSON
+    - WXKDarkSky
+
+SPEC CHECKSUMS:
+  Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
+  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
+  WXKDarkSky: 2bfbf1afc48b3165bdb7c6826b5a376c57d285cf
+
+PODFILE CHECKSUM: 9545b511f5acc24ab114fbb41abab69018cc07be
+
+COCOAPODS: 1.8.4
