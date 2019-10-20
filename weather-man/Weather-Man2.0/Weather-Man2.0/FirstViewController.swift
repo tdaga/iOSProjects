@@ -29,32 +29,20 @@ class FirstViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        checkLocationServices()
-        //getWeather(42.3601, 71.0589)
+    //    checkLocationServices()
         whiteBox.alpha = 0.5
-        
-
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         checkLocationServices()
-        
-        
     }
-
-    func setupLocationManager(){
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-    }
-    
     
     func checkLocationServices() {
         if CLLocationManager.locationServicesEnabled() {
-            setupLocationManager()
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
             checkLocationAuthorization()
-            print("in checkLocationServices")
         } else {
             print("error")
         }
@@ -63,10 +51,9 @@ class FirstViewController: UIViewController {
     func checkLocationAuthorization(){
         switch CLLocationManager.authorizationStatus(){
         case .authorizedWhenInUse:
-            // mapView.showsUserLocation = true
-            centerViewOnUserLocation()
-            print("authorized")
-        // locationManager.startUpdatingLocation()
+            if let location = locationManager.location?.coordinate{
+            getWeather(location.latitude, location.longitude)
+            }
         case .denied:
             break
         case .notDetermined:
@@ -78,14 +65,6 @@ class FirstViewController: UIViewController {
         }
     }
     
-    func centerViewOnUserLocation(){
-        if let location = locationManager.location?.coordinate{
-            let region = MKCoordinateRegion.init(center: location, latitudinalMeters: 10000, longitudinalMeters: 10000)
-            //   mapView.setRegion(region, animated: true)
-            getWeather(location.latitude, location.longitude)
-            
-        }
-    }
     
     func getWeather(_ lat: Double, _ long: Double){
         let key = "f188fd3d9c794413a663be68aba8173b/"
@@ -99,6 +78,7 @@ class FirstViewController: UIViewController {
             let date = Date()
             let calendar = NSCalendar.current
             let hourlyData = json["hourly"]["data"]
+            print(hourlyData)
             let hoursUntil12 = 24 - calendar.component(.hour, from: date)
             var count = 0;
           //  print(hoursUntil12)
@@ -267,35 +247,15 @@ class FirstViewController: UIViewController {
             }
         }
         
-//        TopClothing.text = bestTop.name
-//        BottomClothing.text = bestBottom.name
-//        if (!(bestOuterClothing.name == "")) {
-//            OuterClothing.text = bestOuterClothing.name
-//        }
-        
         print(bestTop.name)
         print(bestBottom.name)
         print(bestOuterClothing.name)
     }
 }
 
-        
-    
-
-
 extension FirstViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else {return}
-        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        //  self.getWeather(center.latitude, center.longitude)
-        let region = MKCoordinateRegion.init(center: center, latitudinalMeters: 10000, longitudinalMeters: 10000)
-        //  mapView.setRegion(region, animated: true)
-    }
-    
+   
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         checkLocationAuthorization()
     }
 }
-
-
-
